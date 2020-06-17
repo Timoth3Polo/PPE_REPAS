@@ -7,7 +7,7 @@
               echo '<div id="Titles">Utilisateur connecté : '.$_SESSION['ident']."</div><br />";
               echo 'Créditer le compte de <b>'.$leEleve['nom']." ".$leEleve['prenom']."</b> : solde actuel = ".$leEleve['creditRepas']."<br /><br />"
                       . "</div>" ;
-              echo '<b>Enregistrer un règlement :</b><br /><br />' ;
+              echo '<b>Enregistrer un règlement :</b><br/><br/>' ;
               
               echo ''
               . '<form method="POST" name="saisie-regl" action="index.php?uc=gestion&action=crediter&role=enregistrer&id='.$leEleve['id'].'" onsubmit="return verifRegl()" autocomplete="off">'

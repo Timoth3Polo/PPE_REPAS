@@ -12,10 +12,16 @@ function verifierIdentification($loginSaisi,$mdpSaisi ) {
     $exec=$bdd->query($sql);
     $trouve = false ;
     $fin=false ;
+
     while (!$trouve && !$fin)
     {
         if ($ligne = $exec->fetch())
         {
+        	/*
+        	echo '<pre>';
+     			var_dump($loginSaisi, $ligne['login'], md5($mdpSaisi), $ligne['mdp']);
+     		echo '</pre>';*/
+     		//var_dump($mdpSaisi);
 
             if ($ligne['login']==$loginSaisi && $ligne['mdp']==$mdpSaisi)
             {
