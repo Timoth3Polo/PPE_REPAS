@@ -447,7 +447,7 @@ function getLesRepasCumul($dateDebut, $dateFin)
  
  function getDescriptionMenu($dateMenu,$numMenu) 
  {
-     require "connexion.php" ;
+    require "connexion.php" ;
 
     $sql="select descriptionMenu "
             ." from elior_menu "
