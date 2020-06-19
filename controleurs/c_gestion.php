@@ -59,6 +59,7 @@ switch ($action)
             $ladateAMJ = substr($ladateURL,0,4)."-".substr($ladateURL,4,2)."-".substr($ladateURL,6,2) ;
             $ladateJMA = getDateJMA($ladateAMJ) ;
             $lesMenus = getLesMenusJour($ladateAMJ) ;
+            $lesFormules = getLesFormules() ;
             require "vues/v_saisir_menu.php" ; 
             break ;               
             break ;             
@@ -96,7 +97,11 @@ switch ($action)
             $ladateJMA = getDateJMA($ladateAMJ) ;
             $numMenu = $_REQUEST['numMenu'] ;
             $descMenu = $_REQUEST['descMenu'.$numMenu] ;
-            ajoutMenu($ladateAMJ, $numMenu, $descMenu) ;
+            $lesFormules = getLesFormules() ;
+            $id = $_REQUEST['id'] ;
+            $laFormule = getLaFormule($id) ;
+
+            ajoutMenu($ladateAMJ, $numMenu, $descMenu, $id) ;
             $lesMenus = getLesMenusJour($ladateAMJ) ;
             require "vues/v_saisir_menu.php" ; 
             break ;                        

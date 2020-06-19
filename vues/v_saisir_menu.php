@@ -1,6 +1,6 @@
 
       <div class="home">
-          
+        <div align="center">
           <div id="Home_title_ss">
               <br /><br />
               <?php
@@ -41,6 +41,8 @@
             $nb=$leMenu['numMenu'];
         }
         
+
+
         //nouveau menu
         $nb++;
         echo 'Nouveau menu à enregistrer<br />'
@@ -49,10 +51,25 @@
                 . '<input type="hidden" name="numMenu" value="'.$nb.'">'  
         . '<b>'.$nb.'</b>&nbsp;&nbsp;'
         . '<input type="text" class="input_text2" name="descMenu'.$nb.'" value ="" size=100>&nbsp;&nbsp;'
-        . '<img src="includes/img/notification_done.png" title="enregistrer ce menu" onclick="javascript:validerMenu('.$nb.')"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
-                . '</form>' ;
+        . '<img src="includes/img/notification_done.png" title="enregistrer ce menu" onclick="javascript:validerMenu('.$nb.')"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
+        <table>
+        <tr>
+            <td>Formule : </td>
+            <td>
+                <select name="id">
+                <option value="0">-- choisir une Formule --</option>' ;
+
+                //affichage des formules 
+                //sélection de la ligne correspondant à la formule choisie
+                foreach ($lesFormules as $laFormule) {
+                    if (isset($id) && ($id==$laFormule['id']))
+                        echo '<option selected value="' . $laFormule['id'] . '">' . $laFormule['libelle'] . '</option>';
+                    else
+                        echo '<option value="' . $laFormule['id'] . '">' . $laFormule['libelle'] . '</option>';
+                }
         ?>
        
+        </div>
           </form>
       </div>

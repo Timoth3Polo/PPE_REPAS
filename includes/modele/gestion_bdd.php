@@ -131,12 +131,12 @@ function majMenu($dateMenu, $numMenu, $descMenu)
     $exec->execute() ;
 }
 
-function ajoutMenu($dateMenu, $numMenu, $descMenu)
+function ajoutMenu($dateMenu, $numMenu, $descMenu, $id)
 {       
     $descMenu = addslashes($descMenu) ;
     require "connexion.php" ;
     $sql="INSERT INTO elior_menu "
-            . "values ('$dateMenu', $numMenu, '$descMenu')" ;
+            . "values ('$dateMenu', $numMenu, '$descMenu', $id)" ;
     //exécution de la requete
     $exec=$bdd->prepare($sql) ;
     $exec->execute() ;
@@ -559,4 +559,25 @@ function getLesRepasCumul($dateDebut, $dateFin)
     $exec->execute() ;
     
  }
+
+  // Récuperer toute les formules
+ function getLesFormules()
+ {
+    require "connexion.php" ;
+    $sql = "select * from elior_formule" ;
+    $exec=$bdd->prepare($sql) ;
+    $exec->execute() ;
+    $curseur=$exec->fetchAll();
+    return $curseur;
+ }
+
+ // Récuperer infos d'une formule
+ function getLaFormule($id) {
+    require "connexion.php" ;
+    $sql = "select * from elior_formule where id = $id" ;
+    $exec=$bdd->prepare($sql) ;
+    $exec->execute() ;
+    $ligne=$exec->fetch();
+    return $ligne;
+}
 ?>
