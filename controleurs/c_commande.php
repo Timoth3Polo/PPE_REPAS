@@ -45,11 +45,11 @@ switch ($action)
                         $lesMenus = getLesMenusDate($ladateAMJ) ;
                         $nbMenus = getNbMenusDate($ladateAMJ) ;
                         $solde = getSolde($_SESSION['idUtil']);  
-                        $params = getParams();
+                        /*$params = getParams();
                         $prixRepas = $params['prixRepas'];
                         $nbRepasDecouvert = $params['nbRepasDecouvert'] ;
-                        $nbRepasPossibles = floor(($solde + $prixRepas * $nbRepasDecouvert)/$prixRepas) ;
-                        if ($nbRepasPossibles < 1)
+                        $nbRepasPossibles = floor(($solde + $prixRepas * $nbRepasDecouvert)/$prixRepas) ;*/
+                        if ($solde < 3)
                         {
                             //erreur : solde insuffisant
                             $message = "Votre solde est de ".$solde." € et ne vous permet pas de commander" ;
@@ -112,11 +112,8 @@ switch ($action)
                         $lesMenus = getLesMenusDate($ladateAMJ) ;
                         $nbMenus = getNbMenusDate($ladateAMJ) ;
                         $solde = getSolde($_SESSION['idUtil']);  
-                        $params = getParams();
-                        $prixRepas = $params['prixRepas'];
-                        $nbRepasDecouvert = $params['nbRepasDecouvert'] ;
-                        $nbRepasPossibles = floor(($solde + $prixRepas * $nbRepasDecouvert)/$prixRepas) ;
-                        if ($nbRepasPossibles < 1)
+                        $formule = getFormule($_SESSION['idUtil'], $ladateJMA, null);
+                        if ($solde < 3)
                         {
                             //erreur : solde insuffisant
                             $message = "Votre solde est de ".$solde." € et ne vous permet pas de commander" ;

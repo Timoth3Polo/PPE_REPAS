@@ -203,6 +203,36 @@ function getParams()
     return $curseur;
 }
 
+function getFormule($idUtil, $dateMenu, $numMenu)
+{
+    require "connexion.php" ;
+    $sql="
+    select *
+    from elior_formule 
+    inner join elior_menu 
+    on elior_formule.id = idFormule 
+    inner join elior_commande
+    on elior_menu.dateMenu = elior_commande.dateMenu 
+    and elior_menu.numMenu = elior_commande.numMenu
+    where elior_commande.idUtil = " . $idUtil .
+    " and elior_commande.dateMenu = '" . $dateMenu . "'" .
+    " and elior_menu.numMenu = " . $numMenu;
+    $exec=$bdd->prepare($sql) ;
+    $exec->execute() ;
+    $curseur=$exec->fetch();
+    return $curseur;
+}
+
+/*function getMenu($numMenu, $dateMenu)
+{
+    require "connexion.php" ;
+    $sql="select * from elior_menu where numMenu = " . $numMenu . " AND dateMenu = '" . $dateMenu ."'";
+    $exec=$bdd->prepare($sql) ;
+    $exec->execute() ;
+    $curseur=$exec->fetch();
+    return $curseur;
+}*/
+
 function getNbMenusJour($date)
 {
     require "connexion.php" ;
@@ -255,37 +285,45 @@ function getCommandeAujourdhui($date, $idUtil)
     return $exec->rowCount() ;
 }
 
-function enregistrerCommande($dateMenu,$numMenu,$idUtil ) {
+function enregistrerCommande($dateMenu,$numMenu,$idUtil)
+{
     require "connexion.php" ;
     $sql="INSERT INTO elior_commande values ('$dateMenu',$numMenu, $idUtil)" ;
     //exécution de la requete
     $exec=$bdd->prepare($sql) ;
-    $exec->execute() ;
+    $exec->execute();
     
     //diminution du crédit repas
-    $params = getParams();
-    $prixRepas = $params['prixRepas'];
+    //$menu = getMenu($numMenu, $dateMenu);
+    $formule = getFormule($idUtil, $dateMenu, $numMenu);
+    $prixRepas = (float)$formule['prix'];
     $sql="update elior_utilisateur SET creditRepas = creditRepas - $prixRepas where id=$idUtil" ;
     //exécution de la requete
-    $exec=$bdd->prepare($sql) ;
-    $exec->execute() ;
- }    
+    $exec=$bdd->prepare($sql);
+    $exec->execute();
+}    
 
- function annulerCommande($dateMenu, $idUtil) {
+function annulerCommande($dateMenu, $idUtil) 
+{
     require "connexion.php" ;
-    $sql="DELETE FROM elior_commande where dateMenu='$dateMenu' and idUtil = $idUtil" ;
-    //exécution de la requete
-    $exec=$bdd->prepare($sql) ;
-    $exec->execute() ;    
-    
+    $sql = "SELECT * FROM elior_commande WHERE dateMenu='$dateMenu' and idUtil = $idUtil";
+    $exec=$bdd->prepare($sql);
+    $exec->execute();
+    $commande = $exec->fetch();
+
     //augmentation du crédit repas
-    $params = getParams();
-    $prixRepas = $params['prixRepas'];
+    $formule = getFormule($commande['idUtil'], $commande['dateMenu'], $commande['numMenu']);
+    $prixRepas = (float)$formule['prix'];
     $sql="update elior_utilisateur SET creditRepas = creditRepas + $prixRepas where id=$idUtil" ;
     //exécution de la requete
     $exec=$bdd->prepare($sql) ;
     $exec->execute() ;
- }
+
+    $sql="DELETE FROM elior_commande where dateMenu='$dateMenu' and idUtil = $idUtil" ;
+    //exécution de la requete
+    $exec=$bdd->prepare($sql);
+    $exec->execute();
+}
  
  function getLesEleves()
  {
