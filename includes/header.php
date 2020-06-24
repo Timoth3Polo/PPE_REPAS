@@ -74,6 +74,11 @@
             <li>
                 <a href="index.php?uc=gestion&action=menu" id="bthome">Saisir menus</a>
             </li>
+
+            <li>
+                <a href="index.php?uc=gestion&action=formule" id="bthome">Formule</a>
+            </li>
+
             <li>
                 <a href="index.php?uc=gestion&action=crediter" id="bthome">Créditer compte élève</a>
             </li>

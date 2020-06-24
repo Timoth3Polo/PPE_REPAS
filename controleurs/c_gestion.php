@@ -9,6 +9,15 @@ else
 	
 switch ($action)
 {
+        case "formule" : {
+
+        $id = $_REQUEST['id'] ;
+        $laFormule = getLaFormule($id) ;
+        $lesFormules = getLesFormules() ;
+        require "vues/v_formule.php";
+        break ;
+    }
+    
 	case "afficher" : { 
             //affiche les commandes du jour
             
