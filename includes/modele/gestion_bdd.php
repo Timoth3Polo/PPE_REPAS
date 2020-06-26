@@ -131,6 +131,16 @@ function majMenu($dateMenu, $numMenu, $descMenu)
     $exec->execute() ;
 }
 
+function getLesFormulesTableau()
+{
+    require "connexion.php" ;
+    $sql="select libelle from elior_formule" ;
+    $exec=$bdd->prepare($sql) ;
+    $exec->execute() ;
+    $curseur=$exec->fetchAll();
+    return $curseur;
+}
+
 function ajoutMenu($dateMenu, $numMenu, $descMenu, $id)
 {       
     $descMenu = addslashes($descMenu) ;

@@ -230,10 +230,6 @@ switch ($action)
         
         case "solde" : {
             $solde = getSolde($_SESSION['idUtil']);  
-            $params = getParams();
-            $prixRepas = $params['prixRepas'];
-            $nbRepasDecouvert = $params['nbRepasDecouvert'] ;
-            $nbRepasPossibles = floor(($solde + $prixRepas * $nbRepasDecouvert)/$prixRepas) ;
             require "vues/v_voir_solde.php" ;
             break ;
         }

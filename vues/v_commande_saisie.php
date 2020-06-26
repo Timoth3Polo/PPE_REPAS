@@ -20,6 +20,11 @@
     </div>
     <div style = "text-align: left; margin-left: 30vw;">
       <?php
+      $LesFormules = getLesFormulesTableau();
+      foreach($LesFormules as $formule)
+      {
+        $tableau_formule[] = [$formule];
+      }
       $tableau_formule = ['Plat + Dessert', 'Entrée + Plat', 'Entrée + Plat + Dessert', 'Plat', 'Restauration rapide'];
       if ($nbMenus == 1) $checked = " checked " ; else $checked = "" ;
       for($i = 1; $i < 6; $i++)
