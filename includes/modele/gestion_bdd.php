@@ -458,7 +458,7 @@ function getLesRepasCumul($dateDebut, $dateFin)
     require "connexion.php" ;
     
     $nomFichier = "bts_listerepas_export.csv" ;
-			
+            
     $fp = fopen($nomFichier, 'w');
     
     fwrite($fp, "BTS - Nombre de repas du ".getDateJMA($dateDebut)." au ".getDateJMA($dateFin)."\n\n");
@@ -466,8 +466,17 @@ function getLesRepasCumul($dateDebut, $dateFin)
     $cumulNbRepas = 0 ;
     if ($typeRepas == 2)
         fwrite($fp, utf8_decode("Date;Nom;Prénom\n"));
-    else 
-        fwrite($fp, utf8_decode("Date;Nombre de repas\n"));
+    else
+    {
+        if($typeRepas == 3)
+        {
+            fwrite($fp, utf8_decode("Libelle;Nombre de repas\n")) ; 
+        }
+        else
+        {
+            fwrite($fp, utf8_decode("Date;Nombre de repas\n"));
+        }
+    }
     
     foreach ($lesRepasPris as $ligne)
     {
@@ -476,10 +485,18 @@ function getLesRepasCumul($dateDebut, $dateFin)
             $ligne_xls=  getDateJMA($ligne['dateMenu']).";".utf8_decode($ligne['nom']).";".utf8_decode($ligne['prenom']) ;
             $cumulNbRepas++ ;
         }
-        else 
+        else
         {
-            $ligne_xls=  getDateJMA($ligne['dateMenu']).";".$ligne['nbRepas'] ;
+            if($typeRepas == 3)
+            {
+                $ligne_xls = getDateJMA($ligne['libelle']).";".($ligne['nbRepas']) ; 
+                $cumulNbRepas++;
+            }
+            else
+            {
+                $ligne_xls=  getDateJMA($ligne['dateMenu']).";".$ligne['nbRepas'] ;
             $cumulNbRepas += $ligne['nbRepas'] ;
+            }
         }
         fwrite($fp, $ligne_xls."\n");
     }  
@@ -491,6 +508,20 @@ function getLesRepasCumul($dateDebut, $dateFin)
         fwrite($fp, "Nombre total de repas;".$cumulNbRepas."\n");
     }
     fclose($fp);
+ }
+ 
+ function getDescriptionMenu($dateMenu,$numMenu) 
+ {
+    require "connexion.php" ;
+
+    $sql="select descriptionMenu "
+            ." from elior_menu "
+            ." where dateMenu='$dateMenu' and numMenu=$numMenu" ;
+
+    $exec=$bdd->prepare($sql) ;
+    $exec->execute() ;
+    $curseur=$exec->fetch();
+    return $curseur['descriptionMenu'];
  }
  
  function getDescriptionMenu($dateMenu,$numMenu) 
@@ -628,4 +659,24 @@ function getLesRepasCumul($dateDebut, $dateFin)
     $ligne=$exec->fetch();
     return $ligne;
 }
+
+function getLesRepasFormule($dateDebut, $dateFin)
+{
+    require "connexion.php" ;
+    
+    //analyse des filtres
+    $where = "e.dateMenu between '$dateDebut' and '$dateFin' " ;
+    
+    $sql="select libelle, COUNT(*) as nbRepas "
+            ." from elior_menu e  "
+            ." inner join elior_commande c  on e.numMenu = c.numMenu and e.dateMenu = c.dateMenu "
+            . " left join elior_formule  on e.idFormule = id"
+            ." where ".$where." "
+            . "group by libelle " 
+            . "order by nbRepas DESC " ;
+    $exec=$bdd->prepare($sql) ;
+    $exec->execute() ;
+    $curseur=$exec->fetchAll();
+    return $curseur;
+ }
 ?>

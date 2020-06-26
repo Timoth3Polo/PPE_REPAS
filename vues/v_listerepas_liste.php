@@ -17,6 +17,7 @@
                       . 'au : <input type="date" class="input_text2" name="dateFin" value="'.$dateFin.'"><br />'
                       . 'Nombre total de repas par date <input type="radio" name="typeRepas" checked value="1">&nbsp;&nbsp;'
                       . 'Détail des repas pris par date <input type="radio" name="typeRepas" value="2"><br />'
+                      . 'Nombre total de repas par formule <input type="radio" name="typeRepas" value="3"><br />'
               . '<input type="submit" class="btn btn-info connectbt" value="valider">&nbsp;&nbsp;&nbsp;&nbsp;'
               . '<a href="index.php?uc=gestion&action=listerepas&role=export"><input type="button" class="btn btn-info connectbt" value="Export Excel"></a>'
                               . '</form><br/>' ;
@@ -50,11 +51,22 @@
                     }
                     else
                     {
-                     echo '<div id="list_paiements" class="table-responsive"><table><tr>'                        
+                      if($_SESSION['typeRepas'] == 3)
+                      {
+                         echo '<div id="list_paiements" class="table-responsive"><table><tr>'                        
+                        . '<th>Formule</th>'
+                        . '<th>Nombre</th>'                                              
+                        . '</tr>' ;
+                      }
+                      else
+                      {
+                        echo '<div id="list_paiements" class="table-responsive"><table><tr>'                        
                         . '<th>Date</th>'
                         . '<th>Nombre</th>'                                             
                         . '</tr>' ;
+                      }
                     }
+                    
                  }
                  $cpt++ ;
                  
@@ -67,13 +79,25 @@
                     . '</tr>' ;
                     $cumulNbRepas++;
                 }
-                else {
+                else
+                {
+                  if ($_SESSION['typeRepas'] == 3)
+                  {
+                    echo '<tr>'
+                    . '<td>'.$leRepas['libelle'].'</td>'
+                    . '<td>'.$leRepas['nbRepas'].'</td>'             
+                    . '</tr>' ; 
+                    $cumulNbRepas +=$leRepas['nbRepas'] ;
+                  }
+                  else {
                     echo '<tr>'
                     . '<td>'.$leRepas['dateMenu'].'</td>'
                     . '<td>'.$leRepas['nbRepas'].'</td>'              
                     . '</tr>' ;
                     $cumulNbRepas+=$leRepas['nbRepas'] ;
+                  }
                 }
+
     
               }
               echo '</table>' ;

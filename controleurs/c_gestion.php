@@ -326,12 +326,22 @@ switch ($action)
                     
                     if ($typeRepas==2)
                         $lesRepasPris = getLesRepasDetail($dateDebut, $dateFin) ;
-                    else 
-                        $lesRepasPris = getLesRepasCumul($dateDebut, $dateFin) ;
+                    else
+                    {
+                        if($typeRepas==3)
+                        {
+                            $lesRepasPris = getLesRepasFormule($dateDebut, $dateFin) ;
+                        }
+                        else
+                        {
+                            $lesRepasPris = getLesRepasCumul($dateDebut, $dateFin) ;
+                        }
+                    }
+
                     $excel = false ;
                     require "vues/v_listerepas_liste.php" ;
-                    break ;                        
-                }                
+                    break ; 
+                }               
                 case "export" : {
                     
                     //récupération des données du filtre d'affichage
@@ -341,13 +351,23 @@ switch ($action)
                     //mise en session des paramètres pour l'e
                     if ($typeRepas==2)
                         $lesRepasPris = getLesRepasDetail($dateDebut, $dateFin) ;
-                    else 
-                        $lesRepasPris = getLesRepasCumul($dateDebut, $dateFin) ;
+                    else
+                    {
+                        if($typeRepas==3)
+                        {
+                            $lesRepasPris = getLesRepasFormule($dateDebut, $dateFin) ;
+                        }
+                        else
+                        {
+                            $lesRepasPris = getLesRepasCumul($dateDebut, $dateFin) ;
+                        }
+                    }
                     exportRepas($dateDebut, $dateFin, $typeRepas, $lesRepasPris) ;
                     $excel = true ;
                     require "vues/v_listerepas_liste.php" ;
                     break ;                        
                 }               
+                         
             }
             break ;
         }
